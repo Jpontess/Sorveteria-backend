@@ -1,5 +1,5 @@
 const express = require('express')
-const conexao = require('./src/config/connetion')
+const conexao = require('./config/connetion')
 const dotenv = require('dotenv')
 dotenv.config()
 
