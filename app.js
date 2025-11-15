@@ -1,6 +1,6 @@
 const ex = require('express')
 const cors = require('cors')
-const mainRouter = require('./src/routes/index')
+const mainRouter = require('./routes/index')
 
 const app = ex()
 
