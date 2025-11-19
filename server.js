@@ -27,7 +27,7 @@ const startDb = async () =>{
     io.on('connect', (socket) => {
         console.log('Novo cliente conectado ID:', socket.id)
 
-        socket.disconnect('disconnect', (socket)=>{
+        socket.on('disconnect', (socket)=>{
             console.log('Cliente desconectado', socket.id)
         })
     })
