@@ -15,11 +15,14 @@ const productSchema = new Schema({
             type: Number,
             required:[true, 'Preço é obrigatória.']
         },
+         image:{
+            type: String
+        },
         category: {type: String},
         isAvailable: {
             type: Boolean,
             default: true,
-        }
+        },
     },
     {
         timestamps: true
