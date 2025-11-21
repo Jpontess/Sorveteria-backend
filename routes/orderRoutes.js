@@ -7,5 +7,6 @@ router.post('/', orderController.createOrder);
 
 // GET /api/orders -> Listar pedidos (Admin)
 router.get('/', orderController.getAllOrders);
+router.patch('/:id',orderController.updateOrder)
 
 module.exports = router;
