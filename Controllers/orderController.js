@@ -2,8 +2,19 @@ const Order = require('../models/Order');
 
 exports.createOrder = async (req, res) => {
   try {
-    const newOrder = await Order.create(req.body);
+    // Processa os items para garantir compatibilidade
+    const orderData = { ...req.body };
+    
+    if (orderData.items) {
+      orderData.items = orderData.items.map(item => ({
+        product: item.product || item.id,
+        name: item.name,
+        quantity: item.quantity,
+        price: item.price,
+      }));
+    }
 
+    const newOrder = await Order.create(orderData);
 
     const io = req.app.get('io');
     

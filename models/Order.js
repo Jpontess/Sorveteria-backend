@@ -11,16 +11,45 @@ const orderSchema = new mongoose.Schema(
       required: [true, 'O telefone é obrigatório.'],
     },
     address: {
-      type: String,
-      required: [true, 'O endereço é obrigatório.'],
+      cep: {
+        type: String,
+        required: [true, 'O CEP é obrigatório.'],
+      },
+      rua: {
+        type: String,
+        required: [true, 'A rua/avenida é obrigatória.'],
+      },
+      numero: {
+        type: String,
+        required: [true, 'O número é obrigatório.'],
+      },
+      complemento: {
+        type: String,
+        default: '',
+      },
+      bairro: {
+        type: String,
+        required: [true, 'O bairro é obrigatório.'],
+      },
+      cidade: {
+        type: String,
+        required: [true, 'A cidade é obrigatória.'],
+      },
+      estado: {
+        type: String,
+        required: [true, 'O estado é obrigatório.'],
+      },
+      pontoReferencia: {
+        type: String,
+        default: '',
+      },
     },
     
    
     items: [
       {
         product: {
-          type: mongoose.Schema.ObjectId,
-          ref: 'Product', 
+          type: String,
           required: true,
         },
         name: String, 
