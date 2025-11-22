@@ -21,6 +21,7 @@ const orderSchema = new mongoose.Schema(
       },
       numero: {
         type: String,
+        maxLength: 10,
         required: [true, 'O número é obrigatório.'],
       },
       complemento: {
