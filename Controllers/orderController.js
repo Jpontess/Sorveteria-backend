@@ -1,4 +1,5 @@
 const Order = require('../models/Order');
+const RelatorioMensal = require('../models/relatorios');
 
 exports.createOrder = async (req, res) => {
   try {
@@ -15,6 +16,41 @@ exports.createOrder = async (req, res) => {
     }
 
     const newOrder = await Order.create(orderData);
+
+    // --- NOVA LÓGICA DE RELATÓRIO AQUI ---
+    
+    // Pega a data atual
+    const dataAtual = new Date();
+    const ano = dataAtual.getFullYear();
+    const mesIndex = dataAtual.getMonth(); // 0 = Janeiro, 11 = Dezembro
+    
+    // Array para pegar o nome do mês por extenso
+    const nomesMeses = [
+      "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+      "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+    ];
+    const mesNome = nomesMeses[mesIndex];
+
+    // Gera uma chave única. Ex: "Dezembro-2023" ou "12-2023"
+    // Vou usar "MES-ANO" para garantir unicidade
+    const key = `${mesNome}-${ano}`;
+
+    // Atualiza o relatório existente OU cria um novo (Upsert)
+    await RelatorioMensal.findOneAndUpdate(
+      { key: key }, // Busca por essa chave
+      { 
+        $push: { orders: newOrder._id }, // Adiciona o ID do pedido no array
+        $setOnInsert: { // Se for criar um NOVO, define esses campos:
+            mesNome: mesNome,
+            ano: ano,
+            isOpen: true
+        }
+      },
+      { upsert: true, new: true } // upsert: cria se não achar. new: retorna o doc atualizado
+    );
+    
+    console.log(`Pedido ${newOrder._id} adicionado ao relatório de ${key}`);
+    // --------------------------------------
 
     const io = req.app.get('io');
     

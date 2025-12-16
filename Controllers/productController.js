@@ -4,6 +4,7 @@ exports.createProduct = async (req, res) => {
     try
     {
         const product = await Product.create(req.body)
+        
 
         res.status(201).json({
             status: 'Sucesso',
