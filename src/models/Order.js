@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const orderSchema = new mongoose.Schema(
+const orderSchema = new Schema(
   {
     customerName: {
       type: String,
@@ -85,4 +85,4 @@ const orderSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model('Order', orderSchema);
+export default model('Order', orderSchema);

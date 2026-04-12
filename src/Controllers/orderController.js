@@ -1,7 +1,7 @@
-const Order = require('../models/Order');
-const RelatorioMensal = require('../models/relatorios');
+import Order from '../models/Order.js';
+import Relatorios from '../models/relatorios.js';
 
-exports.createOrder = async (req, res) => {
+export async function createOrder(req, res, next) {
   try {
     // Processa os items para garantir compatibilidade
     const orderData = { ...req.body };
@@ -17,14 +17,11 @@ exports.createOrder = async (req, res) => {
 
     const newOrder = await Order.create(orderData);
 
-    // --- NOVA LÓGICA DE RELATÓRIO AQUI ---
-    
-    // Pega a data atual
     const dataAtual = new Date();
     const ano = dataAtual.getFullYear();
-    const mesIndex = dataAtual.getMonth(); // 0 = Janeiro, 11 = Dezembro
+    const mesIndex = dataAtual.getMonth(); 
     
-    // Array para pegar o nome do mês por extenso
+  
     const nomesMeses = [
       "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
       "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
@@ -36,7 +33,7 @@ exports.createOrder = async (req, res) => {
     const key = `${mesNome}-${ano}`;
 
     // Atualiza o relatório existente OU cria um novo (Upsert)
-    await RelatorioMensal.findOneAndUpdate(
+    await Relatorios.findOneAndUpdate(
       { key: key }, // Busca por essa chave
       { 
         $push: { orders: newOrder._id }, // Adiciona o ID do pedido no array
@@ -66,16 +63,13 @@ exports.createOrder = async (req, res) => {
         order: newOrder,
       },
     });
-  } catch (error) {
-    res.status(400).json({
-      status: 'Falha',
-      message: error.message,
-    });
+  } catch (erro) {
+    next(erro)
   }
-};
+}
 
 
-exports.getAllOrders = async (req, res) => {
+export async function getAllOrders(req, res, next) {
   try {
     
     //ordenar o pedido do mais novo para o mais velho
@@ -88,15 +82,12 @@ exports.getAllOrders = async (req, res) => {
         orders,
       },
     });
-  } catch (error) {
-    res.status(400).json({
-      status: 'Falha',
-      message: error.message,
-    });
+  } catch (erro) {
+    next(erro)
   }
-};
+}
 
-exports.updateOrder = async (req, res) => {
+export async function updateOrder(req, res, next) {
   try {
     const orderId = req.params.id;
     const updates = req.body;
@@ -119,12 +110,6 @@ exports.updateOrder = async (req, res) => {
       runValidators: true 
     });
 
-    if (!order) {
-      return res.status(404).json({
-        status: 'fail',
-        message: 'Pedido não encontrado.',
-      });
-    }
 
     const io = req.app.get('io');
     io.emit('order_updated', order);
@@ -137,10 +122,7 @@ exports.updateOrder = async (req, res) => {
         order,
       },
     });
-  } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message,
-    });
+  } catch (erro) {
+    next(erro)
   }
-};
+}

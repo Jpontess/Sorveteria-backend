@@ -1,7 +1,7 @@
-const mongoose = require("mongoose")
-const Order = require("./Order")
+import { Schema, SchemaTypes, model } from "mongoose";
+import Order from "./Order.js";
 
-const  relatorioSchema = new mongoose.Schema({
+const  relatorioSchema = new Schema({
     key:{
         type: String,
         required: true,
@@ -10,7 +10,7 @@ const  relatorioSchema = new mongoose.Schema({
     },
     orders: [
         {
-            type: mongoose.SchemaTypes.ObjectId,
+            type: SchemaTypes.ObjectId,
             ref: "Order"
         }
     ],
@@ -20,4 +20,4 @@ const  relatorioSchema = new mongoose.Schema({
 });
 
 
-module.exports = mongoose.model("RelatoriosMensal", relatorioSchema)
+export default model("RelatoriosMensal", relatorioSchema)
