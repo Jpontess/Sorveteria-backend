@@ -1,12 +1,17 @@
 import bcrypt from "bcryptjs";
 import type { UserDTO } from "../../models/Users/user.dto.ts";
 import { UserRepository } from "../../repository/login/user.repository.ts";
-import { User } from "../../models/Users/users.schema.ts";
+import jwt from 'jsonwebtoken';
+import { config } from "dotenv";
+
+
+config();
+const CHAVE = process.env.JWT_SECRET;
 
 export class AuthService {
-    private repository = new UserRepository();
+    constructor(private readonly repository: UserRepository){}
 
-    async registerUsers(user: UserDTO) {
+    registerUsers = async (user: UserDTO) => {
         const findUser = await this.repository.findByUser(user.name);
         if (findUser) throw new Error(`Usuário com nome ${user.name} já cadastrado.`);
 
@@ -24,7 +29,8 @@ export class AuthService {
 
         const isMatchHash = await bcrypt.compare(password, findUser.password!);
         if (!isMatchHash) throw new Error("Senha está incorreta!");
-
-        return findUser;
-    }
-}
+        
+        const token = jwt.sign({name}, CHAVE!, {expiresIn: "5h"});
+        return token;
+    };
+};
