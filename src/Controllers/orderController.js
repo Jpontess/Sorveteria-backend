@@ -23,8 +23,8 @@ export async function createOrder(req, res, next) {
     
   
     const nomesMeses = [
-      "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-      "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+      'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+      'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
     ];
     const mesNome = nomesMeses[mesIndex];
 
@@ -38,9 +38,9 @@ export async function createOrder(req, res, next) {
       { 
         $push: { orders: newOrder._id }, // Adiciona o ID do pedido no array
         $setOnInsert: { // Se for criar um NOVO, define esses campos:
-            mesNome: mesNome,
-            ano: ano,
-            isOpen: true
+          mesNome: mesNome,
+          ano: ano,
+          isOpen: true
         }
       },
       { upsert: true, new: true } // upsert: cria se não achar. new: retorna o doc atualizado
@@ -64,7 +64,7 @@ export async function createOrder(req, res, next) {
       },
     });
   } catch (erro) {
-    next(erro)
+    next(erro);
   }
 }
 
@@ -83,7 +83,7 @@ export async function getAllOrders(req, res, next) {
       },
     });
   } catch (erro) {
-    next(erro)
+    next(erro);
   }
 }
 
@@ -123,6 +123,6 @@ export async function updateOrder(req, res, next) {
       },
     });
   } catch (erro) {
-    next(erro)
+    next(erro);
   }
 }

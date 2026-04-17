@@ -7,6 +7,6 @@ router.post('/', createOrder);
 
 // GET /api/orders -> Listar pedidos (Admin)
 router.get('/', getAllOrders);
-router.patch('/:id',updateOrder)
+router.patch('/:id',updateOrder);
 
 export default router;

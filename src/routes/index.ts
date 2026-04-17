@@ -1,9 +1,9 @@
-import { Router } from 'express'
+import { Router } from 'express';
 const app = Router();
-import healthRotas from './healthRoutes.ts'
-import loginRotas from './loginRoutes.ts'
+import healthRotas from './healthRoutes.ts';
+import loginRotas from './loginRoutes.ts';
 
-app.use('/health', healthRotas)
-app.use('/auth',loginRotas)
+app.use('/health', healthRotas);
+app.use('/auth',loginRotas);
 
-export default app
+export default app;

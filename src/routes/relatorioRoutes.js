@@ -1,9 +1,9 @@
-import { Router } from 'express'
-const router = Router()
+import { Router } from 'express';
+const router = Router();
 
 
-import { Listar } from "../../Controllers/relatoriosController.js"
+import { Listar } from '../../Controllers/relatoriosController.js';
 
-router.get("/",Listar)
+router.get('/',Listar);
 
-export default router
+export default router;
