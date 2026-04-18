@@ -1,7 +1,7 @@
-import { UserRepository } from '../user.repository.ts';
-import { User } from '../../../models/Users/users.schema.ts';
+import { User } from '../../models/Users/users.schema.ts';
+import { UserRepository } from '../login/user.repository.ts';
 
-jest.mock('../../../models/Users/users.schema.ts');
+jest.mock('../../models/Users/users.schema.ts');
 
 describe('userRepository', () => {
   let repository: UserRepository;

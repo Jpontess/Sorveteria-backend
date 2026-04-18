@@ -15,6 +15,10 @@ const productSchema = new Schema({
     type: Number,
     required:[true, 'Preço é obrigatória.']
   },
+  quantity:{
+    type: Number,
+    required: [true, 'Quantidade é obrigatória']
+  },
   image:{
     type: String
   },
