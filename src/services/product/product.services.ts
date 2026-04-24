@@ -1,4 +1,5 @@
-import type { ProductDto } from '../../models/Product/product.dto.ts';
+import { ProductDto } from '../../models/Product/product.dto.ts';
+import type { ProductDeleteDto } from '../../models/Product/produtcDelete.dto.ts';
 import type { ProductRepository } from '../../repository/product/product.repository.ts';
 
 export class ProductService {
@@ -21,15 +22,21 @@ export class ProductService {
     return await this.repository.getById(id);
   };
 
-  updateByIdProduct = async () =>{
-
-  };
-  updateByIdProductQuatity = async () =>{
-
+  updateByIdProduct = async (id: string, dto: ProductDto) =>{
+    if (!id) return Error('Erro Id inválido!');
+    return await this.repository.update(id, dto);
   };
 
-  softDeleteByIdProduct = async () =>{
+  softDeleteByIdProduct = async (id: string) =>{
+    const findId = await this.repository.getById(id);
 
+    if (!findId) throw new Error('Produto não encotrado!');
+
+    const updateDto: ProductDeleteDto = {
+      deleted: true
+    };
+
+    return await this.repository.softDelete(id , updateDto);
   };
 
 

@@ -6,4 +6,5 @@ export class ProductDto {
   image!: string;
   category!: string;
   isAvailable!: boolean;
+  deleted?: boolean;
 }

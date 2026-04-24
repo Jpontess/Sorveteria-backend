@@ -7,6 +7,8 @@ jest.mock('../../repository/product/product.repository.ts', () => ({
     createProduct: jest.fn(),
     getAll: jest.fn(),
     getById: jest.fn(),
+    update: jest.fn(),
+    softDelete: jest.fn(),
   }))
 }));
 
@@ -78,7 +80,6 @@ describe('Test in Product Service', () => {
       expect(repository.getAll).toHaveBeenCalledWith();
     });
   });
-
   describe('getByIdProduct', () =>{
     it('isso deveria retorna um produto por id', async () =>{
       const dto = {
@@ -98,6 +99,66 @@ describe('Test in Product Service', () => {
 
       expect(result).toEqual(dto);
       expect(repository.getById).toHaveBeenCalledWith(dto.id);
+    });
+  });
+  describe('updateByIdProduct', () => {
+    it('isso deveria editar um Produto', async () => { 
+      const mockProduct = {
+        id: '1234',
+        name: 'Produto 01',
+        description: 'descrição 01',
+        price: 10.00,
+        quantity: 10,
+        image: 'img_caminho',
+        isAvailable: true,
+        category: 'Massa'
+      };
+      const mockUpdate = {
+        name: 'Produto 02', 
+        description: 'descrição 11',
+        price: 11.00,
+        quantity: 10,
+        image: 'img_caminho',
+        isAvailable: true,
+        category: 'Massa'
+      };
+
+      (repository.update as jest.Mock).mockResolvedValue(mockUpdate);
+
+      const result = await service.updateByIdProduct(mockProduct.id, mockUpdate);
+      expect(result?.name).toBe('Produto 02');
+      expect(repository.update).toHaveBeenCalledWith(mockProduct.id, mockUpdate);
+    });
+  });
+
+  describe('softDeleteByIdProduct', () => {
+    it('isso deveria passar um status de true', async () => {
+      const product = {
+        id: '123',
+        deleted: false,
+      };
+
+      const updateDeleted = {
+        deleted: true
+      };
+
+      (repository.getById as jest.Mock).mockResolvedValue(product);
+      (repository.softDelete as jest.Mock).mockResolvedValue(updateDeleted);
+
+      const result = await service.softDeleteByIdProduct(product.id);
+
+      expect(result).toEqual(updateDeleted);
+      expect(repository.getById).toHaveBeenCalledWith(product.id);
+      expect(repository.softDelete).toHaveBeenCalledWith(product.id,updateDeleted);
+    });
+    it('isso deveria lançar um erro de produto não encontrado', async () =>{
+      const updateProd = '123';
+
+      (repository.getById as jest.Mock).mockResolvedValue(null);
+
+      await expect(service.softDeleteByIdProduct(updateProd)).rejects.toThrow('Produto não encotrado!');
+      expect(repository.getById).toHaveBeenCalledWith(updateProd);
+      expect(repository.softDelete).not.toHaveBeenCalled();
     });
   });
 });
