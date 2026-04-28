@@ -27,7 +27,7 @@ const productSchema = new Schema({
     type: Boolean,
     default: true,
   },
-  deleted: {
+  isDeleted: {
     type: Boolean,
     default: false,
   }

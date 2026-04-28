@@ -1,3 +1,3 @@
 export interface ProductDeleteDto {
-  deleted: boolean
+  isDeleted: boolean
 }

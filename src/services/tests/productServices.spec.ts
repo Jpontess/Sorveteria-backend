@@ -135,11 +135,11 @@ describe('Test in Product Service', () => {
     it('isso deveria passar um status de true', async () => {
       const product = {
         id: '123',
-        deleted: false,
+        isDeleted: false,
       };
 
       const updateDeleted = {
-        deleted: true
+        isDeleted: true
       };
 
       (repository.getById as jest.Mock).mockResolvedValue(product);
