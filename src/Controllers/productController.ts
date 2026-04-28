@@ -8,8 +8,7 @@ export class ProductController{
     try{
       const result = await this.service.createProduct(req.body);      
       return res.status(201).json({
-        message: 'Produto criado com sucesso',
-        data: result
+        message: `${result.name} foi criando com sucesso`,
       });
     }catch (error) {
       return res.status(400).json({
@@ -21,9 +20,7 @@ export class ProductController{
   getProductAll = async (req: Request, res: Response) => {
     try {
       const result = await this.service.getAllProduct();
-      return res.status(200).json({
-        data: result
-      });
+      return res.status(200).json(result);
     } catch (error) {
       return res.status(400).json({ 
         message: `${error}`
@@ -41,9 +38,7 @@ export class ProductController{
 
       const result = await this.service.getByIdProduct(id.toString());
       
-      return res.status(200).json({
-        data: result
-      });
+      return res.status(200).json(result);
     } catch (error) {
       return res.status(400).json({ message: `Erro ao buscar produtos: ${error}` } );
     }

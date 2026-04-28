@@ -8,7 +8,10 @@ const app = express();
 
 // conexão com o banco de dados
 connection();
-app.use(cors);
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
 app.use(express.json());
 app.use(router, index);
 

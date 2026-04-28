@@ -33,7 +33,7 @@ export class ProductService {
     if (!findId) throw new Error('Produto não encotrado!');
 
     const updateDto: ProductDeleteDto = {
-      deleted: true
+      isDeleted: true
     };
 
     return await this.repository.softDelete(id , updateDto);
