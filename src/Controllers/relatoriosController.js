@@ -7,7 +7,7 @@ export async function Listar(req, res, next) {
     const { key } = req.query; 
 
     if (!key) {
-      return res.status(400).json({ error: "A chave do mês (ex: Dezembro-2023) é obrigatória." });
+      return res.status(400).json({ error: 'A chave do mês (ex: Dezembro-2023) é obrigatória.' });
     }
 
     console.log(`🔎 Buscando relatório para: ${key}`);
@@ -49,6 +49,6 @@ export async function Listar(req, res, next) {
     });
 
   } catch (erro) {
-    next(erro)
+    next(erro);
   }
 }
