@@ -1,6 +1,6 @@
-const RelatorioMensal = require('../models/relatorios'); // Certifique-se de importar o MODEL, não o Schema
+import Relatorio from '../src/routes/models/relatorios.js'; // Certifique-se de importar o MODEL, não o Schema
 
-exports.Listar = async (req, res) => {
+export async function Listar(req, res, next) {
   try {
     // O frontend deve enviar a chave exata que salvamos. 
     // Ex: /relatorios?key=Dezembro-2023
@@ -13,7 +13,7 @@ exports.Listar = async (req, res) => {
     console.log(`🔎 Buscando relatório para: ${key}`);
 
     // Busca a coleção e usa o POPULATE para trazer os dados reais dos pedidos
-    const relatorio = await RelatorioMensal.findOne({ key: key })
+    const relatorio = await Relatorio.findOne({ key: key })
       .populate('orders'); // <--- A MÁGICA: Troca IDs pelos objetos reais do Pedido
 
     // Se não existir relatório para aquele mês ainda
@@ -48,8 +48,7 @@ exports.Listar = async (req, res) => {
       }
     });
 
-  } catch (error) {
-    console.error("Erro no dashboard:", error);
-    res.status(500).json({ error: "Erro ao carregar dashboard" });
+  } catch (erro) {
+    next(erro)
   }
-};
+}

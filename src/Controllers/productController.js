@@ -1,9 +1,9 @@
-const Product = require('../models/produto')
+import Produto from '../models/produto.js'
 
-exports.createProduct = async (req, res) => {
+export async function createProduct(req, res, next) {
     try
     {
-        const product = await Product.create(req.body)
+        const product = await Produto.create(req.body)
         
 
         res.status(201).json({
@@ -13,37 +13,31 @@ exports.createProduct = async (req, res) => {
             },
         })
     }
-    catch(error){
-        res.status(400).json({
-            status: 'Fail',
-            message: error.message,
-        })
+    catch(erro){
+      next(erro)
     }
 }
 
-exports.listarProdutos = async (req, res) => {
+export async function listarProdutos(req, res, next) {
     try{
-        const produtos = await Product.find({})
+        const produtos = await Produto.find({})
 
-        res.status(200).json({
+        res.status(200).json({ 
             status: 'sucesso',
             data: {
                 produtos,
             }
         })
     }
-    catch(error){
-        res.status(400).json({
-            status: 'Falha ao listar os Produtos',
-            message: error.message,
-        })
+    catch(erro){
+       next(erro)
     }
 }
 
-exports.DeletarProduto = async (req, res) =>{
+export async function DeletarProduto(req, res, next){
     try{
         const id = req.params.id 
-        const produto = await Product.findByIdAndDelete(id)
+        const produto = await Produto.findByIdAndDelete(id)
 
         if(!produto){
             return res.status(404).json({
@@ -64,11 +58,11 @@ exports.DeletarProduto = async (req, res) =>{
         })
     }
 }
-exports.ListarPorId = async(req,res) => {
+export async function ListarPorId(req,res, next) {
     try {
         const id = req.params.id
 
-        const produto = await Product.findById(id)
+        const produto = await Produto.findById(id)
         res.status(200).json({
             status: 'Sucesso',
             data: [
@@ -76,19 +70,16 @@ exports.ListarPorId = async(req,res) => {
             ],
         })
 
-    } catch (error) {
-        res.status(400).json({
-            status:'Falha',
-            message: error.message,
-        })
+    } catch (erro) {
+       next(erro)
     }
 }
-exports.EditarProduto = async (req, res) =>{
+export async function EditarProduto(req, res){
     try {
         const id = req.params.id
         const produtoEditado = req.body
 
-        const produto = await Product.findByIdAndUpdate(
+        const produto = await Produto.findByIdAndUpdate(
             id,
             produtoEditado,
             {
