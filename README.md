@@ -16,7 +16,7 @@ API RESTful para gerenciamento de produtos de uma sorveteria. Construída com No
 
 ## 📋 Pré-requisitos
 
-- Node.js >= 18
+- Node.js = v22.14.0
 - MongoDB (local ou Atlas)
 
 ---
