@@ -40,7 +40,7 @@ export class ProductController{
       
       return res.status(200).json(result);
     } catch (error) {
-      return res.status(400).json({ message: `Erro ao buscar produtos: ${error}` } );
+      return res.status(404).json({ message: `Erro ao buscar produtos: ${error}` } );
     }
   };
 
@@ -48,7 +48,7 @@ export class ProductController{
     try {
       const { id } = req.params;
       if (!id){
-        return Error('Erro ao editar produto, id inválido');
+        throw new Error('Erro ao editar produto, id inválido');
       }
 
       const result = await this.service.updateByIdProduct(id.toString(), req.body);
@@ -70,7 +70,7 @@ export class ProductController{
     try {
       const { id } = req.params;
       if (!id){
-        return Error('Error ao deletar, id inválido');
+        throw new Error('Error ao deletar, id inválido');
       }
     
       const result = await this.service.softDeleteByIdProduct(id.toString());
@@ -78,7 +78,12 @@ export class ProductController{
       return res.status(200).json(result);
     
     } catch (error) {
-      res.status(400).json({
+      if(error instanceof Error){
+        if(error.message === 'Error ao deletar, id inválido'){
+          return res.status(404).json({ message: error.message });
+        }
+      }
+      return res.status(400).json({
         message: error
       });
     }
