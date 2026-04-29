@@ -1,5 +1,5 @@
 import express from 'express';
-import router from './routes/healthRoutes.js';
+import router from './routes/healthRoutes.ts';
 import index from './routes/index.ts';
 import { connection } from '../src/config/connetion.ts';
 import cors from 'cors';
